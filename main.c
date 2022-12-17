@@ -7,8 +7,8 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "ifct_element.h"
-#include "ifct_database.h"
+#include "C:\Users\82103\Desktop\전프밍\기말 프로젝트\basecode\infectionPath\ifct_element.h"
+#include "C:\Users\82103\Desktop\전프밍\기말 프로젝트\basecode\infectionPath\ifct_database.h"
 
 #define MENU_PATIENT        1
 #define MENU_PLACE          2
@@ -25,8 +25,11 @@ int main(int argc, const char * argv[]) {
     int menu_selection;
     void *ifct_element;
     FILE* fp;
+    FILE* pile;
     int pIndex, age, time;
     int placeHist[N_HISTORY];
+
+
     
     
     //------------- 1. loading patient info file ------------------------------
@@ -46,34 +49,24 @@ int main(int argc, const char * argv[]) {
     
     //1-2. loading each patient informations
     //ifsele_genElement( , , , ); 
-   #if0 
-   //fgets(그 문자를 넣을 변수;읽어올 문자 수 기준(공백),파일포인터)하면 
-   //공백기준으로 문자열 읽어와서 변수에다가 해당 문자열 넣어줌 
-    while (3 ==fscanf(fp,"%s %s %s",%index,&age,&ifct_point))
+   #if0  
+   
+   pile = fopen("patientInfo_sample.txt","r");
+ 
+    while (3 ==fscanf(pile,"%i %i %i",&pIndex,&age,&time))//텍스트파일에서 앞에 3개(번호, 나이, 감염일자) 읽어 왔으면  
     {
+    	int i;
     	for(i=0;i<5;i++)
-    	  ifctdb_getData(i);
-    	  fscanf(fp,"%s",&ifs_ele.place[i]);
+    	  fscanf(pile,"%i",&placeHist[i]);//앞의 3개 읽은 후 그 뒤부터 읽어옴=>방문 장소 5개를 차례대로 placeHist 배열에 저장  
 
-       ifctele = ifctele_genElement(index, age, ifct_point, place_history);
+       unsigned *ifct_ele = ifctele_genElement(pIndex, age, time, placeHist);
        
-       ictele_printElement(ifct_element);
-
+       ifctdb_addTail(ifct_ele);
 	}
 	#endif
     //1-3. FILE pointer close
     fclose(fp);
-    
-    /*장소마다 지정된 숫자에서 장소가 어디인지 화면에 출력하는... 
-    {
-    	int place1.place2;
-    	place1= 11;
-    	place2=19
-    	printf("The first place is %i\n",ifctele_getPlaceName_(place1));
-    	printf("The second place is %i\n",ifctele_getPlaceName_(place2));
 
-	}
-	*/
     do {
         printf("\n=============== INFECTION PATH MANAGEMENT PROGRAM (No. of patients : %i) =============\n", ifctdb_len());
         printf("1. Print details about a patient.\n");                      //MENU_PATIENT
@@ -98,13 +91,13 @@ int main(int argc, const char * argv[]) {
                 printf("Patient index: \n");
                 scanf("%i",&pIndex);
                 
-                int ptn_index* = ifctdb_getData(pIndex);
+                int *ptn_index = ifctdb_getData(pIndex);
                 
-				ifctele_printElement(ptn_index*);
-				//printf("age: %i\n",ifctele_getAge(ptn_index*));
+				ifctele_printElement(*ptn_index);
+				//printElement 사용해서 환자 index,나이,감염날짜,방문 장소 출력  
 
 				
-                break;//나이를 뺴올 때는 ifctele_getAge()쓰기 
+                break;
                 
             case MENU_PLACE:
             {
@@ -122,15 +115,15 @@ int main(int argc, const char * argv[]) {
                 	{
                 		for(j=0;j<5;j++)
                 		{
-                			if( i==ifs_ele.place[4])//??????
+                			if( i== placeHist[4])//입력한 장소의 number와 5명의 환자의 감염 장소가 같은 경우  
                 			{
-                		    patienst_cnt++;
+                		    patients_cnt++;//해당 장소에서 감염된 환자의 수에 1을 더해줌  
                 		    }
                      	}  
 					}
 				}
 				
-                printf("There are %i patients detected in %c .\n",patients_cnt,place)
+                printf("There are %i patients detected in %c .\n",patients_cnt,place);
                 break;
             }
                 
@@ -138,6 +131,7 @@ int main(int argc, const char * argv[]) {
             {	int min_age;
             	int max_age;
             	int patient_cnt;
+            	int i;
             	
             	printf("minimal age : \n");
             	scanf("%i",&min_age);
@@ -159,9 +153,21 @@ int main(int argc, const char * argv[]) {
                 printf("Patient index: \n");
                 scanf("%i",&pIndex);
                 
-                printf("-->[TRACKING] patient %i is infected by %i (time : %i, place : ??)",pIndex)
-                printf("-->[TRACKING] patient %i is infected by %i (time : %i, place : ??)",pIndex)
-                printf("The first infector of %i is %i",pIndex)
+                while()
+                {
+                printf("-->[TRACKING] patient %i is infected by %i (time : %i, place : %c )",pIndex,,)
+               
+			   if()
+			   {
+			    printf("The first infector of %i is %i",pIndex);
+			    
+			   }
+			   else
+			   {
+			   	printf("%i is the first infector!!",pIndex);
+			   }
+			   
+			   }
 
 				break;
                 
