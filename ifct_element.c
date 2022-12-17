@@ -101,7 +101,7 @@ char countryName[N_PLACE+1][MAX_PLACENAME] =
 char* ifctele_getPlaceName_(int placeIndex)
 {
 	
-	return countryName(placeIndex)
+	return countryName(placeIndex)//번호를 입력받아 그 번호에 대응하는 장소 이름 출력  
 }
 
 typedef struct ifs_ele{
@@ -109,7 +109,7 @@ typedef struct ifs_ele{
 	int index;//번호:정수 
 	int age;//나이:정수 
 	int ifct_point;//감염 시점:정수 
-	enum place_t place[N_HISTORY];
+    place_t place[N_HISTORY];
 	
 	
 	 //감염 직전 이동경로 : enum활용하여 place_t로, 정수 배열 크기는 N_HISTORY 저장! ifct_elemen.h에 매크로로 저장되어있음 (문자열이 아닌 정수로 저장했으니까) 
@@ -118,15 +118,21 @@ typedef struct ifs_ele{
 
 void* ifctele_genElement(int index, int age, unsigned int detected_time, int history_place[N_HISTORY]){
 	//정보를 구조체 안에다가 넣는 함수 
+	
 	ifs_ele_t *ptr;
+
+	
+	printf("%d\n", place[0]);
+	
 	ptr=(struct ifs_ele_t*)malloc(5*sizeof (struct ifs_ele_t));
 	ptr->index = index;
 	ptr->age = age;
-	ptr->ifct_point =ifct_point;
-	ptr->place = place;
-	 
+	ptr->ifct_point = ifct_point;
+
+    for(i=0;i<5;i++){
+	ptr->place[i] = history_place[i];
+    }
 	//환자의 정보를 나타내면 됨(번호,나이,감염시점,감염 직전 이동경로)
-	
 	//여기서 malloc했다고 해서 free를 해버리면 정보로 이루어진 구조체를 넘겨주기 전에 다 버려버리는거임=>free 하면 안돼 
 	return (ptr); 
 }
@@ -141,9 +147,8 @@ int ifctele_getAge(void* obj){
 } 
  
  int ifctele_getHistPlaceindex(void* obj, int index);
- unsigned int ictele_getinfectedTime(void* obj);
+ unsigned int ictele_getinfectedTime(void* obj);,
  
-//printElement 함수는 밑에 둘 중에 하나 고르는건데 배열은 쓰지 말라고하심...
  
 void ifctele_printElement(void *obj){
 //배열로 하지 않으면 이게 더 유용할 것 
@@ -152,18 +157,15 @@ void ifctele_printElement(void *obj){
 	
 	printf("index : %i\n",strPtr->index);
 	printf("Age : %i\n",strPtr->age);
-	printf("ifct_point : %i\n",strPtr->ifct_point);
+	printf("Detected time : %i\n",strPtr->ifct_point);
+	printf("Path History: ");
+	for (i=0;i<4;i++)//마지막 장소, 즉 감염 장소를 제외한 4개의 방문장소 출력  
+	{
+	    printf(" %c(%i) -> ",ifctele_getPlaceName_(strPtr->place[i]),strPtr->place[i]);
+	}
+	printf(" %c(%i)\n ",ifctele_getPlaceName_(strPtr->place[4]),strPtr->place[4]);//마지막 장소(=감염장소 출력) 
 
-	
 }
 
 
-/*강의자료 버전(강의 자료에 오류 있음!)
- void ifctele_printElement(void *obj){
- 	이건 배열로 환자정보 여러가지를 쭉 정렬할 떄 손이 감 */
-	
-	//print elements
-	//for (ifs_cnt)통해서 반복하고 
-	//ifsarrya[i].index-> print 포문 돌리면서 모든 환자정보를 찍는다고 보면 됨 
-	
 }
