@@ -39,14 +39,14 @@ Build=0
 LanguageID=1033
 CharsetID=1252
 CompanyName=
-FileVersion=
+FileVersion=1.0.0.0
 FileDescription=Developed using the Dev-C++ IDE
 InternalName=
 LegalCopyright=
 LegalTrademarks=
 OriginalFilename=
 ProductName=
-ProductVersion=
+ProductVersion=1.0.0.0
 AutoIncBuildNr=0
 SyncProduct=1
 
@@ -60,18 +60,8 @@ Priority=1000
 OverrideBuildCmd=0
 BuildCmd=
 
-[Unit3]
-FileName=..\main.c
-CompileCpp=0
-Folder=
-Compile=1
-Link=1
-Priority=1000
-OverrideBuildCmd=0
-BuildCmd=
-
 [Unit4]
-FileName=ifct_element.c
+FileName=ifct_database.h
 CompileCpp=0
 Folder=
 Compile=1
@@ -81,7 +71,7 @@ OverrideBuildCmd=0
 BuildCmd=
 
 [Unit5]
-FileName=ifct_database.h
+FileName=main.c
 CompileCpp=0
 Folder=
 Compile=1
@@ -102,6 +92,16 @@ BuildCmd=
 
 [Unit1]
 FileName=..\ifct_database.c
+CompileCpp=0
+Folder=
+Compile=1
+Link=1
+Priority=1000
+OverrideBuildCmd=0
+BuildCmd=
+
+[Unit3]
+FileName=ifct_element.c
 CompileCpp=0
 Folder=
 Compile=1

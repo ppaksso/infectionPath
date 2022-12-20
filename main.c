@@ -25,9 +25,9 @@ int main(int argc, const char * argv[]) {
     int menu_selection;
     void *ifct_element;
     FILE* fp;
-    FILE* pile;
-    int pIndex, age, time;
-    int placeHist[N_HISTORY];
+    FILE* pile;//환자 정보 담긴 텍스트파일  
+    int pIndex, age, time;//환자 번호, 나이, 감염 시점 
+    int placeHist[N_HISTORY];//이동 장소  
 
 
     
@@ -48,18 +48,17 @@ int main(int argc, const char * argv[]) {
     }//이렇게 해놔야 디버깅 할 떄나 프로그램을 실행할 떄나 더 편함 
     
     //1-2. loading each patient informations
-    //ifsele_genElement( , , , ); 
    #if0  
    
    pile = fopen("patientInfo_sample.txt","r");
  
-    while (3 ==fscanf(pile,"%i %i %i",&pIndex,&age,&time))//텍스트파일에서 앞에 3개(번호, 나이, 감염일자) 읽어 왔으면  
+    while (3 ==fscanf(pile,"%i %i %i",&pIndex,&age,&time))//텍스트파일에서 앞에 3개(번호, 나이, 감염일자) 읽어 왔을 때 
     {
     	int i;
     	for(i=0;i<5;i++)
     	  fscanf(pile,"%i",&placeHist[i]);//앞의 3개 읽은 후 그 뒤부터 읽어옴=>방문 장소 5개를 차례대로 placeHist 배열에 저장  
 
-       unsigned *ifct_ele = ifctele_genElement(pIndex, age, time, placeHist);
+       unsigned *ifct_ele = ifctele_genElement(pIndex, age, time, placeHist);//텍스트 파일에 있는 환자 정보를 읽어와서  구조체 안에 넣기  
        
        ifctdb_addTail(ifct_ele);
 	}
@@ -89,12 +88,12 @@ int main(int argc, const char * argv[]) {
             case MENU_PATIENT:
                 
                 printf("Patient index: \n");
-                scanf("%i",&pIndex);
+                scanf("%i",&pIndex);//환자 번호 입력받기  
                 
                 int *ptn_index = ifctdb_getData(pIndex);
                 
 				ifctele_printElement(*ptn_index);
-				//printElement 사용해서 환자 index,나이,감염날짜,방문 장소 출력  
+				// 환자 index,나이,감염날짜,방문 장소 출력  
 
 				
                 break;
@@ -104,7 +103,7 @@ int main(int argc, const char * argv[]) {
 			    char place;
             	
                 printf("Place Name : \n");
-                scanf("%i",&place);
+                scanf("%i",&place);//장소 이름 입력받기  
                 
                 int patients_cnt;
                 int i,j;
@@ -115,9 +114,9 @@ int main(int argc, const char * argv[]) {
                 	{
                 		for(j=0;j<5;j++)
                 		{
-                			if( i== placeHist[4])//입력한 장소의 number와 5명의 환자의 감염 장소가 같은 경우  
+                			if( i== placeHist[4])//입력한 장소의 number와 0~4번 환자의 감염 장소가 같은 경우  
                 			{
-                		    patients_cnt++;//해당 장소에서 감염된 환자의 수에 1을 더해줌  
+                		    patients_cnt++;//해당 장소에서 감염된 환자의 수(=patients_cnt)에 1을 더해줌  
                 		    }
                      	}  
 					}
@@ -128,20 +127,20 @@ int main(int argc, const char * argv[]) {
             }
                 
             case MENU_AGE:
-            {	int min_age;
-            	int max_age;
-            	int patient_cnt;
+            {	int min_age;//최소 나이 
+            	int max_age;//최대 나이 
+            	int patient_cnt;//나이가 최소 나이 이상, 최대 이하인 환자의 수  
             	int i;
             	
             	printf("minimal age : \n");
-            	scanf("%i",&min_age);
+            	scanf("%i",&min_age);//최소 나이 입력받기  
                 printf("maximal age : \n");
-            	scanf("%i",&max_age);
+            	scanf("%i",&max_age);//최대 나이 입력받기  
             	
             	for(i=0;i<4;i++)
-                {	if (min_age <= ifctele_getAge(ifctdb_getData(i)) <= max_age)
+                {	if (min_age <= ifctele_getAge(ifctdb_getData(i)) <= max_age)//getAge함수 사용하여 0~4번째 환자의 나이가 최소 이상&최대 이상인 경우  
                 	{
-                	    patient_cnt++;	
+                	    patient_cnt++;
 					}
 			    }
 				printf("There are %i patients whose age is between %i and %i .\n",patient_cnt,min_age,max_age);
@@ -151,21 +150,23 @@ int main(int argc, const char * argv[]) {
             case MENU_TRACK:
             {
                 printf("Patient index: \n");
-                scanf("%i",&pIndex);
+                scanf("%i",&pIndex);//환자 번호 입력받기  
                 
-                while()
+                while(1)
                 {
-                printf("-->[TRACKING] patient %i is infected by %i (time : %i, place : %c )",pIndex,,)
+                printf("-->[TRACKING] patient %i is infected by %i (time : %i, place : %c )",pIndex,,)//환자 감염 경로 추적  
                
-			   if()
-			   {
-			    printf("The first infector of %i is %i",pIndex);
+			     if()//입력한 번호의 환자와 최초감염자가 다를 때  
+			    {
+			    printf("The first infector of %i is %i",pIndex);//추적이  끝나면 최초 감염자 누군지 출력  
+			    break;
 			    
-			   }
-			   else
-			   {
+			    }
+			     else// 입력한 번호에 해당하는 환자가 최초 감염자인 경우  
+			    {
 			   	printf("%i is the first infector!!",pIndex);
-			   }
+			   	break;
+			    }
 			   
 			   }
 

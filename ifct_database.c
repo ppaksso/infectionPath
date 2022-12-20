@@ -8,13 +8,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "ifct_database.h"
+#include "C:\Users\82103\Desktop\전프밍\기말 프로젝트\basecode\infectionPath\ifct_database.h"
 
 #define LIST_END -1
 
 //node definition for linked list
 typedef struct node{
-    int index;      //index of the node 몇번째 노드냐  
+    int index;      //index of the node 몇번째 노드인지  
     void* obj;      //object data obj=오브젝트 데이터의 메모리주소를 포인터변수로 갖고 있는 것  
     void* next;         //pointer to the next 넥스트 포인터  
     void* prev;         //pointer to the next 이전 노드에 대한 포인터  
@@ -22,7 +22,7 @@ typedef struct node{
 //노드에 대한 정의  
 
 static node_t* list_database = NULL;
-//헤더포인터를 만든 거 static으로 해서 바깥에서 접근 못하게... 구조체의 포인터 형태로 선언함 실제로 메모리를 잡고 있는 건 아님 
+//헤더포인터를 만든 거 static으로 해서 바깥에서 접근 못하게 함  구조체의 포인터 형태로 선언함 실제로 메모리를 잡고 있는 건 아님 
 static node_t* listPtr = NULL;
 static int list_cnt = 0;
 
@@ -32,8 +32,8 @@ static node_t* genNode(void)//노드를 생성하는 함수 =>노드 만들어서 그 포인터를 �
 {
     //allocate memory for creating the node
     node_t* ndPtr = (node_t*)malloc(sizeof(node_t));
-	//동적 메모리 할당! 굳이정적 메모리 할당이 아니라  malloc쓴 이유는 함수가 실행됐을 떄 stiac메모리 영역에 구조체가 잡히고 함수가  끝났을 떄 메모리가 다 없어짐
-	//그래서 이 함수가 끝나고 이 메모리 할당은 살아있음  
+	//동적 메모리 할당! 
+
     if (ndPtr != NULL)
     {
         ndPtr->next = NULL;//걍 포인터를 초기화 시켜준 거 =이 포인터는 아직 빈 껍데기다~ 
@@ -46,7 +46,7 @@ static node_t* genNode(void)//노드를 생성하는 함수 =>노드 만들어서 그 포인터를 �
 
 static node_t* ifctList(int index)
 {
-    node_t* ndPtr = list_database;..//노드 포인터를 하나 만들어서 헤더 포인터랑 똑같이 가리키게  함  
+    node_t* ndPtr = list_database;//노드 포인터를 하나 만들어서 헤더 포인터랑 똑같이 가리키게  함  
     if (listPtr != NULL && listPtr->index <= index)
     {
         ndPtr = listPtr;
@@ -69,7 +69,7 @@ static node_t* ifctList(int index)
     {
         if (ndPtr->index == index)//노드의 번호가 내가 찾고자 하는 노드와 같으면 break통해서 반복문 나가고 그대로 포인터 리턴  
             break;
-        ndPtr = ndPtr->next;//반복을 통해 노드 포인터는 노드포인터의 넥스트를 가리키게...이 노드 포인터가 NULL을 가리킬떄 까지(=끝까지 갈때 까지) 
+        ndPtr = ndPtr->next;//반복을 통해 노드 포인터는 노드포인터의 넥스트를 가리키게 함 이 노드 포인터가 NULL을 가리킬떄 까지(=끝까지 갈때 까지) 
     }
     
     return ndPtr;
@@ -102,7 +102,7 @@ static int updateIndex(void)
                 3. make the last node's next pointer to point the new node
                 4. update the index
 */
-int ifctdb_addTail(void* obj)//노드 추가하는 거 & static안 붙어 있는 이유는 바깥으로 제공해야하므로 static을 뺀 거  
+int ifctdb_addTail(void* obj)//노드 추가하는 거 & 다른 소스파일에서 ifct_database로 접근해야하므로 static을 사용하지 않음   
 {
     node_t* ndPtr;
     node_t* newNdPtr;
@@ -127,7 +127,7 @@ int ifctdb_addTail(void* obj)//노드 추가하는 거 & static안 붙어 있는 이유는 바깥
     if (list_database == NULL)//노드가 한개도 없으면  
     {
         list_database = newNdPtr;//헤더 포인터가 새로 만든 노드를 가리키게끔  
-        newNdPtr->index = 0;// 첫 노드니까 0번쨰임 
+        newNdPtr->index = 0;// 첫 노드니까 0번쨰를 가리킴  
     }
     else//링크드 리스트에 노드가 한개라도 있을 떄  
     {
@@ -186,7 +186,7 @@ int ifctdb_deleteData(int index)
     }
     else
     {
-        updateIndex();//중간에 있던 노드를 지웠으면 지운 노드 뒤의 노드들이  인덱스를 업뎃 
+        updateIndex();//중간에 있던 노드를 지웠으면 지운 노드 뒤의 노드들이 순서대로 포인터 가리키게끔 인덱스를 업뎃 
     }
     
     return 0;

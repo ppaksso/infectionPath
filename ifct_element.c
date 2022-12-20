@@ -98,10 +98,10 @@ char countryName[N_PLACE+1][MAX_PLACENAME] =
     "Unrecognized"
 }; 
 
-char* ifctele_getPlaceName_(int placeIndex)
+char ifctele_getPlaceName_(int placeIndex)//반환형을 포인터로 해야하는건지 그냥 char로 받는 건지 모르겠음 
 {
 	
-	return countryName(placeIndex)//번호를 입력받아 그 번호에 대응하는 장소 이름 출력  
+	return countryName[placeIndex];//번호를 입력받아 그 번호에 대응하는 장소 이름 출력  
 }
 
 typedef struct ifs_ele{
@@ -116,19 +116,20 @@ typedef struct ifs_ele{
 } ifs_ele_t;
  
 
-void* ifctele_genElement(int index, int age, unsigned int detected_time, int history_place[N_HISTORY]){
+void* ifctele_genElement(int index, int age, unsigned int ifct_point, int history_place[N_HISTORY]){
 	//정보를 구조체 안에다가 넣는 함수 
 	
 	ifs_ele_t *ptr;
 
+
 	
-	printf("%d\n", place[0]);
-	
-	ptr=(struct ifs_ele_t*)malloc(5*sizeof (struct ifs_ele_t));
+	ptr=(struct ifs_ele_t*)malloc(5*sizeof(ifs_ele_t));
 	ptr->index = index;
 	ptr->age = age;
 	ptr->ifct_point = ifct_point;
-
+	
+	int i;
+	 
     for(i=0;i<5;i++){
 	ptr->place[i] = history_place[i];
     }
@@ -141,20 +142,22 @@ void* ifctele_genElement(int index, int age, unsigned int detected_time, int his
 
 int ifctele_getAge(void* obj){
 	
-	ifs_ele_t *strPtr = {ifs_ele_t *}obj;
+	ifs_ele_t *strPtr = (ifs_ele_t *)obj;
 	
 	return strPtr->age; 
 } 
  
  int ifctele_getHistPlaceindex(void* obj, int index);
- unsigned int ictele_getinfectedTime(void* obj);,
+ unsigned int ictele_getinfectedTime(void* obj);
  
  
 void ifctele_printElement(void *obj){
 //배열로 하지 않으면 이게 더 유용할 것 
 	
-	ifs_ele *strPtr = (ifs_ele_t *)obj;
+	ifs_ele_t *strPtr = (ifs_ele_t *)obj;
 	
+	int i;
+	 
 	printf("index : %i\n",strPtr->index);
 	printf("Age : %i\n",strPtr->age);
 	printf("Detected time : %i\n",strPtr->ifct_point);
@@ -163,9 +166,9 @@ void ifctele_printElement(void *obj){
 	{
 	    printf(" %c(%i) -> ",ifctele_getPlaceName_(strPtr->place[i]),strPtr->place[i]);
 	}
-	printf(" %c(%i)\n ",ifctele_getPlaceName_(strPtr->place[4]),strPtr->place[4]);//마지막 장소(=감염장소 출력) 
+	printf(" %c(%i)\n ",ifctele_getPlaceName_(strPtr->place[4]),strPtr->place[4]);//마지막 장소(=감염장소) 출력
 
 }
 
 
-}
+
